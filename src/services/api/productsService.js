@@ -356,9 +356,8 @@ class ProductsService {
         console.error("Error fetching categories:", response.message);
         return { success: false, data: [] };
       }
-
-      // Extract unique categories
-      const categories = [...new Set(response.data?.map(item => item.category_c).filter(Boolean))] || [];
+// Extract unique categories
+      const categories = [...new Set(response.data?.map(item => item.category_c).filter(Boolean))];
 
       return {
         success: true,
