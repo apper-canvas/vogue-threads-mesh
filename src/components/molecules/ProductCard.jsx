@@ -13,7 +13,7 @@ const ProductCard = ({ product, onAddToCart, className = "" }) => {
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
   useEffect(() => {
-    checkWishlistStatus();
+checkWishlistStatus();
   }, [product.Id]);
 
   const checkWishlistStatus = async () => {
@@ -26,7 +26,7 @@ const ProductCard = ({ product, onAddToCart, className = "" }) => {
   };
 
   const handleProductClick = () => {
-    navigate(`/product/${product.Id}`);
+navigate(`/product/${product.Id}`);
   };
 
   const handleAddToCart = (e) => {
@@ -41,11 +41,11 @@ const ProductCard = ({ product, onAddToCart, className = "" }) => {
     setWishlistLoading(true);
     try {
       if (isInWishlist) {
-        await wishlistService.remove(product.Id);
+await wishlistService.remove(product.Id);
         setIsInWishlist(false);
         toast.success('Removed from wishlist');
       } else {
-        await wishlistService.add(product.Id);
+await wishlistService.add(product.Id);
         setIsInWishlist(true);
         toast.success('Added to wishlist');
       }
@@ -68,12 +68,12 @@ const ProductCard = ({ product, onAddToCart, className = "" }) => {
     >
 <div className="relative overflow-hidden">
         <img
-          src={product.images[0]}
+src={product.images && product.images.length > 0 ? product.images[0] : "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&h=600&fit=crop"}
           alt={product.name}
           className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
         />
         
-        {product.featured && (
+{product.featured && (
           <Badge 
             variant="accent" 
             className="absolute top-3 left-3 bg-gradient-to-r from-accent to-yellow-500"
@@ -115,21 +115,21 @@ const ProductCard = ({ product, onAddToCart, className = "" }) => {
 
       <div className="p-4 space-y-2">
         <h3 className="font-medium text-primary group-hover:text-accent transition-colors duration-200 line-clamp-1">
-          {product.name}
+{product.name}
         </h3>
         
         <p className="text-sm text-gray-600 line-clamp-2">
-          {product.description}
+{product.description}
         </p>
         
         <div className="flex items-center justify-between">
-          <span className="font-display text-lg font-semibold bg-gradient-to-r from-accent to-yellow-600 bg-clip-text text-transparent">
+<span className="font-display text-lg font-semibold bg-gradient-to-r from-accent to-yellow-600 bg-clip-text text-transparent">
             ${product.price}
           </span>
           
           <div className="flex items-center space-x-1 text-xs text-gray-500">
             <ApperIcon name="Palette" className="w-3 h-3" />
-            <span>{product.colors.length} colors</span>
+<span>{product.colors && product.colors.length > 0 ? `${product.colors.length} colors` : 'Multiple options'}</span>
           </div>
         </div>
       </div>

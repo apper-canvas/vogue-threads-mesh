@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useAuth } from "@/layouts/Root";
 import productsService from "@/services/api/productsService";
 import cartService from "@/services/api/cartService";
 import { wishlistService } from "@/services/api/wishlistService";
@@ -12,6 +14,8 @@ const Header = ({ onCartClick }) => {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [categories, setCategories] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +23,6 @@ const Header = ({ onCartClick }) => {
     loadWishlistCount();
     loadCategories();
   }, []);
-
   const loadWishlistCount = async () => {
     try {
       const count = await wishlistService.getCount();
@@ -169,22 +172,59 @@ const Header = ({ onCartClick }) => {
                 ))}
               </div>
 <div className="border-t border-gray-200 pt-4 space-y-2">
-                <Link
-                  to="/profile"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-accent py-2 transition-colors duration-200"
-                >
-                  <ApperIcon name="User" className="w-4 h-4" />
-                  <span>My Profile</span>
-                </Link>
-                <Link
-                  to="/wishlist"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-accent py-2 transition-colors duration-200"
-                >
-                  <ApperIcon name="Heart" className="w-4 h-4" />
-                  <span>My Wishlist ({wishlistCount})</span>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <div className="px-2 py-2 border-b border-gray-200 mb-2">
+                      <p className="text-sm font-medium text-gray-900">{user?.firstName} {user?.lastName}</p>
+                      <p className="text-xs text-gray-500">{user?.emailAddress}</p>
+                    </div>
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center space-x-2 text-gray-600 hover:text-accent py-2 transition-colors duration-200"
+                    >
+                      <ApperIcon name="User" className="w-4 h-4" />
+                      <span>My Profile</span>
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center space-x-2 text-gray-600 hover:text-accent py-2 transition-colors duration-200"
+                    >
+                      <ApperIcon name="Heart" className="w-4 h-4" />
+                      <span>My Wishlist ({wishlistCount})</span>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="flex items-center space-x-2 text-gray-600 hover:text-red-600 py-2 transition-colors duration-200 w-full text-left"
+                    >
+                      <ApperIcon name="LogOut" className="w-4 h-4" />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center space-x-2 text-gray-600 hover:text-accent py-2 transition-colors duration-200"
+                    >
+                      <ApperIcon name="LogIn" className="w-4 h-4" />
+                      <span>Login</span>
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center space-x-2 text-gray-600 hover:text-accent py-2 transition-colors duration-200"
+                    >
+                      <ApperIcon name="UserPlus" className="w-4 h-4" />
+                      <span>Sign Up</span>
+                    </Link>
+                  </>
+                )}
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
@@ -194,7 +234,7 @@ const Header = ({ onCartClick }) => {
                   >
                     {item.name}
                   </Link>
-))}
+                ))}
               </div>
             </nav>
           </div>

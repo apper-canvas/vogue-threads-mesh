@@ -32,8 +32,8 @@ useEffect(() => {
 
   useEffect(() => {
     if (product) {
-      setSelectedSize(product.sizes[0] || "");
-      setSelectedColor(product.colors[0] || "");
+setSelectedSize(product.sizes && product.sizes.length > 0 ? product.sizes[0] : "");
+      setSelectedColor(product.colors && product.colors.length > 0 ? product.colors[0] : "");
       loadRelatedProducts();
       checkWishlistStatus();
     }
@@ -101,12 +101,12 @@ const loadRelatedProducts = async () => {
   };
 
   const handleAddToCart = async () => {
-    if (!selectedSize && product.sizes.length > 0) {
+if (!selectedSize && product.sizes && product.sizes.length > 0) {
       toast.error("Please select a size");
       return;
     }
 
-    if (!selectedColor && product.colors.length > 0) {
+    if (!selectedColor && product.colors && product.colors.length > 0) {
       toast.error("Please select a color");
       return;
     }
@@ -137,12 +137,12 @@ const loadRelatedProducts = async () => {
   const handleRelatedProductAddToCart = async (relatedProduct) => {
     try {
       const cartItem = {
-        productId: relatedProduct.Id,
+productId: relatedProduct.Id,
         productName: relatedProduct.name,
         price: relatedProduct.price,
         quantity: 1,
-        selectedSize: relatedProduct.sizes[0] || "",
-        selectedColor: relatedProduct.colors[0] || "",
+        selectedSize: relatedProduct.sizes && relatedProduct.sizes.length > 0 ? relatedProduct.sizes[0] : "",
+        selectedColor: relatedProduct.colors && relatedProduct.colors.length > 0 ? relatedProduct.colors[0] : "",
       };
 
       const result = await cartService.addToCart(cartItem);
@@ -230,7 +230,7 @@ const loadRelatedProducts = async () => {
           <div className="space-y-4">
             <div className="relative aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden">
               <img
-                src={product.images[selectedImage]}
+src={product.images && product.images.length > selectedImage ? product.images[selectedImage] : "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&h=600&fit=crop"}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -244,7 +244,7 @@ const loadRelatedProducts = async () => {
               )}
             </div>
             
-            {product.images.length > 1 && (
+{product.images && product.images.length > 1 && (
               <div className="flex space-x-2 overflow-x-auto">
                 {product.images.map((image, index) => (
                   <button
@@ -286,7 +286,7 @@ const loadRelatedProducts = async () => {
             </div>
 
             {/* Size Selection */}
-            {product.sizes.length > 0 && (
+{product.sizes && product.sizes.length > 0 && (
               <div>
                 <label className="block font-medium text-primary mb-3">
                   Size
@@ -310,7 +310,7 @@ const loadRelatedProducts = async () => {
             )}
 
             {/* Color Selection */}
-            {product.colors.length > 0 && (
+{product.colors && product.colors.length > 0 && (
               <div>
                 <label className="block font-medium text-primary mb-3">
                   Color

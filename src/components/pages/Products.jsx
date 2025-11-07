@@ -82,12 +82,12 @@ const Products = () => {
   const handleAddToCart = async (product) => {
     try {
       const cartItem = {
-        productId: product.Id,
+productId: product.Id,
         productName: product.name,
         price: product.price,
         quantity: 1,
-        selectedSize: product.sizes[0] || "",
-        selectedColor: product.colors[0] || "",
+        selectedSize: product.sizes && product.sizes.length > 0 ? product.sizes[0] : "",
+        selectedColor: product.colors && product.colors.length > 0 ? product.colors[0] : "",
       };
 
       const result = await cartService.addToCart(cartItem);

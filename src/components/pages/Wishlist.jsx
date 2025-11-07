@@ -153,8 +153,8 @@ const handleViewProduct = (productId) => {
               className="group bg-surface rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
             >
               <div className="relative overflow-hidden">
-                <img
-                  src={product.imageUrl}
+<img
+                  src={product.images && product.images.length > 0 ? product.images[0] : "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&h=600&fit=crop"}
                   alt={product.name}
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -177,8 +177,8 @@ const handleViewProduct = (productId) => {
                 
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-xl font-bold text-accent">
-                      ${product.price.toFixed(2)}
+<span className="text-xl font-bold text-accent">
+                      ${product.price ? product.price.toFixed(2) : '0.00'}
                     </span>
                     {product.originalPrice && product.originalPrice > product.price && (
                       <span className="text-sm text-gray-500 line-through">
@@ -186,7 +186,7 @@ const handleViewProduct = (productId) => {
                       </span>
                     )}
                   </div>
-                  {product.rating && (
+{product.rating && (
                     <div className="flex items-center space-x-1">
                       <ApperIcon name="Star" size={14} className="text-yellow-400 fill-current" />
                       <span className="text-sm text-gray-600">{product.rating}</span>
